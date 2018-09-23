@@ -302,4 +302,3 @@ void loop() {
   button_D7.checkStatus();
   button_GPIO10.checkStatus();
 }
-
