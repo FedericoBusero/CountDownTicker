@@ -43,13 +43,13 @@ enum
   MODE_QUIT,
 };
 
-ButtonRepeat button_D3(D3, BUTTON_MINUTES_PLUS);
-ButtonRepeat button_D4(D4, BUTTON_MINUTES_MIN);
-ButtonRepeat button_D6(D6, BUTTON_SECONDS_PLUS);
-ButtonRepeat button_D7(D7, BUTTON_SECONDS_MIN);
-Button button_D5(D5, BUTTON_RESET);
-Button button_D0(D0, BUTTON_PAUSEPLAY);
-ButtonLong button_GPIO10(10, BUTTON_STOP, BUTTON_STOP_LONG);
+ButtonRepeat buttonMinutesPlus(D3, BUTTON_MINUTES_PLUS);
+ButtonRepeat buttonMinutesMin (D4, BUTTON_MINUTES_MIN);
+ButtonRepeat buttonSecondsPlus(D6, BUTTON_SECONDS_PLUS);
+ButtonRepeat buttonSecondsMin (D7, BUTTON_SECONDS_MIN);
+Button       buttonReset      (D5, BUTTON_RESET);
+Button       buttonPausePlay  (D0, BUTTON_PAUSEPLAY);
+ButtonLong   buttonStop       (10, BUTTON_STOP, BUTTON_STOP_LONG); // GPIO10
 
 String inputString = "";         // a String to hold incoming data
 
@@ -297,11 +297,11 @@ void loop() {
     }
   }
 
-  button_D0.checkStatus();
-  button_D3.checkStatus();
-  button_D4.checkStatus();
-  button_D5.checkStatus();
-  button_D6.checkStatus();
-  button_D7.checkStatus();
-  button_GPIO10.checkStatus();
+  buttonPausePlay.checkStatus();
+  buttonMinutesPlus.checkStatus();
+  buttonMinutesMin.checkStatus();
+  buttonReset.checkStatus();
+  buttonSecondsPlus.checkStatus();
+  buttonSecondsMin.checkStatus();
+  buttonStop.checkStatus();
 }
