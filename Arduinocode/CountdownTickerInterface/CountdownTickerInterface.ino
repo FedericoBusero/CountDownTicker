@@ -19,6 +19,9 @@ LiquidCrystal_I2C lcd(0x38, 16, 2); // set the LCD address to 0x3F for a 16 char
   - check if string class causes memory leaks
   - hidden switchoff (very long press stop = shutdown)?
 */
+
+#define SERIAL_RASPI Serial
+
 enum
 {
   BUTTON_RESET = 1,
@@ -101,39 +104,39 @@ void nexttimer_seconds_min()
 }
 
 void ticker_StartCountdown(int _hour, int _minute, int _second) {
-  Serial.print("StartCountdown ");
-  Serial.print(_hour);
-  Serial.print(' ');
-  Serial.print(_minute);
-  Serial.print(' ');
-  Serial.print(_second);
-  Serial.print("\r\n");
+  SERIAL_RASPI.print("StartCountdown ");
+  SERIAL_RASPI.print(_hour);
+  SERIAL_RASPI.print(' ');
+  SERIAL_RASPI.print(_minute);
+  SERIAL_RASPI.print(' ');
+  SERIAL_RASPI.print(_second);
+  SERIAL_RASPI.print("\r\n");
 }
 
 void ticker_ResetCountdown(int _hour, int _minute, int _second) {
-  Serial.print("ResetCountdown ");
-  Serial.print(_hour);
-  Serial.print(' ');
-  Serial.print(_minute);
-  Serial.print(' ');
-  Serial.print(_second);
-  Serial.print("\r\n");
+  SERIAL_RASPI.print("ResetCountdown ");
+  SERIAL_RASPI.print(_hour);
+  SERIAL_RASPI.print(' ');
+  SERIAL_RASPI.print(_minute);
+  SERIAL_RASPI.print(' ');
+  SERIAL_RASPI.print(_second);
+  SERIAL_RASPI.print("\r\n");
 }
 
 
 void ticker_pause() {
-  Serial.print("Pause");
-  Serial.print("\r\n");
+  SERIAL_RASPI.print("Pause");
+  SERIAL_RASPI.print("\r\n");
 }
 
 void ticker_stop() {
-  Serial.print("Stop");
-  Serial.print("\r\n");
+  SERIAL_RASPI.print("Stop");
+  SERIAL_RASPI.print("\r\n");
 }
 
 void ticker_quit() {
-  Serial.print("Quit");
-  Serial.print("\r\n");
+  SERIAL_RASPI.print("Quit");
+  SERIAL_RASPI.print("\r\n");
 }
 
 void updatedisplay()
@@ -221,7 +224,7 @@ void onButtonReleased(int id)
 }
 
 void setup() {
-  Serial.begin(115200);
+  SERIAL_RASPI.begin(115200);
   inputString.reserve(200);
 
   nexttimer_init();
@@ -236,13 +239,13 @@ void setup() {
 }
 
 void loop() {
-  while (Serial.available()) {
-    char inChar = (char)Serial.read();
+  while (SERIAL_RASPI.available()) {
+    char inChar = (char)SERIAL_RASPI.read();
     inputString += inChar;
     if (inChar == '\n') {
       //      lcd.setCursor(0, 1);
       //      lcd.print("                ");
-      //      Serial.println(inputString);
+      //      SERIAL_RASPI.println(inputString);
       inputString.trim();
       int pos = inputString.indexOf(',');
       if (pos >= 0)
