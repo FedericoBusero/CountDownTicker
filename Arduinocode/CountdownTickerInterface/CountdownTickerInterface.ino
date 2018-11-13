@@ -42,13 +42,24 @@ enum
   MODE_QUIT,
 };
 
+#ifdef ESP8266
 ButtonRepeat buttonMinutesPlus(D3, BUTTON_MINUTES_PLUS);
 ButtonRepeat buttonMinutesMin (D4, BUTTON_MINUTES_MIN);
 ButtonRepeat buttonSecondsPlus(D6, BUTTON_SECONDS_PLUS);
 ButtonRepeat buttonSecondsMin (D7, BUTTON_SECONDS_MIN);
 Button       buttonReset      (D5, BUTTON_RESET);
 Button       buttonPausePlay  (D0, BUTTON_PAUSEPLAY);
-ButtonLong   buttonStop       (10, BUTTON_STOP, BUTTON_STOP_LONG); // GPIO10
+Button       buttonStop       (10, BUTTON_STOP); // GPIO10
+//ButtonLong   buttonStop       (10, BUTTON_STOP, BUTTON_STOP_LONG); // GPIO10
+#else
+ButtonRepeat buttonMinutesPlus(2, BUTTON_MINUTES_PLUS);
+ButtonRepeat buttonMinutesMin (3, BUTTON_MINUTES_MIN);
+ButtonRepeat buttonSecondsPlus(4, BUTTON_SECONDS_PLUS);
+ButtonRepeat buttonSecondsMin (5, BUTTON_SECONDS_MIN);
+Button       buttonReset      (6, BUTTON_RESET);
+Button       buttonPausePlay  (7, BUTTON_PAUSEPLAY);
+ButtonLong   buttonStop       (8, BUTTON_STOP, BUTTON_STOP_LONG); 
+#endif
 
 String inputString = "";         // a String to hold incoming data
 
