@@ -232,7 +232,11 @@ go = True
 GREEN = (0,255,0)
 RED = (255,0,0)
 BLACK = (0,0,0)
-font = pygame.font.SysFont ("Helvetica", int(screen_width/4.25), True)
+if (platform.system()=="Windows"):
+    font_size = int(screen_width/4.25)
+else:
+    font_size = int(screen_width/2.9)
+font = pygame.font.SysFont ("Helvetica", font_size, True)
 
 ticker_updateStatus("",3)
 
