@@ -174,26 +174,35 @@ void ticker_ping() {
 
 void updatedisplay()
 {
-  String str = "Next: ";
-  lcd.setCursor(0, 0);
+  char display[17];
+  char *pos;
+  
+  strcpy(display,"Next: ");
+  pos=&(display[6]);
+  
   if (nexttimer_hour)
   {
-    str += (char)('0' + (nexttimer_hour % 10));
-    str += ':';
+    *pos++ = (char)('0' + (nexttimer_hour % 10));
+    *pos++ = ':';
   }
   else
   {
-    str += "  ";
+    *pos++ = ' ';
+    *pos++ = ' ';
   }
-  str += (char)('0' + (nexttimer_minutes / 10));
-  str += (char)('0' + (nexttimer_minutes % 10));
-  str += ':';
-  str += (char)('0' + (nexttimer_seconds / 10));
-  str += (char)('0' + (nexttimer_seconds % 10));
-  str += "  ";
-  lcd.print(str);
+  *pos++ = (char)('0' + (nexttimer_minutes / 10));
+  *pos++ = (char)('0' + (nexttimer_minutes % 10));
+  *pos++ = ':';
+  *pos++ = (char)('0' + (nexttimer_seconds / 10));
+  *pos++ = (char)('0' + (nexttimer_seconds % 10));
+  *pos++ = ' ';
+  *pos++ = ' ';
+  *pos++ = ' ';
+  *pos++ = 0;
+  
+  lcd.setCursor(0, 0);
+  lcd.print(display);
 }
-
 
 void onButtonPressed(int id)
 {
