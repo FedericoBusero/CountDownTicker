@@ -5,13 +5,16 @@
 #include <ESP8266WiFi.h>
 // 3.3V display
 // SDA=D2=GPIO4, SCL=D1=GPIO5 op NodeMCU
-//LiquidCrystal_I2C lcd(0x3F,16,2);  // set the LCD address to 0x3F for a 16 chars and 2 line display
-LiquidCrystal_I2C lcd(0x38, 16, 2); // set the LCD address to 0x3F for a 16 chars and 2 line display
+//#define LCD_I2C_ADDRESS 0x3F
+#define LCD_I2C_ADDRESS 0x38
+
 #else
-// 5V
-LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x3F for a 16 chars and 2 line display
-// Opgelet, hoewel module wel werkt op 3.3V, heeft het toch 5V nodig om voldoende hard te licht te geven
+// 5V Opgelet, hoewel module wel werkt op 3.3V, heeft het toch 5V nodig om voldoende hard te licht te geven
+#define LCD_I2C_ADDRESS 0x27
+
 #endif
+
+LiquidCrystal_I2C lcd(LCD_I2C_ADDRESS, 16, 2); // set the LCD address to 0x3F for a 16 chars and 2 line display
 
 #include "Button.h"
 /*
