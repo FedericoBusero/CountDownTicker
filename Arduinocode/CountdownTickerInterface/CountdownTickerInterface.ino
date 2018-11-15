@@ -3,13 +3,11 @@
 
 #ifdef ESP8266
 #include <ESP8266WiFi.h>
-// 3.3V display
-// SDA=D2=GPIO4, SCL=D1=GPIO5 op NodeMCU
+// NodeMCU: SDA=D2=GPIO4, SCL=D1=GPIO5
 //#define LCD_I2C_ADDRESS 0x3F
 #define LCD_I2C_ADDRESS 0x38
 
 #else
-// 5V Opgelet, hoewel module wel werkt op 3.3V, heeft het toch 5V nodig om voldoende hard te licht te geven
 #define LCD_I2C_ADDRESS 0x27
 
 #endif
