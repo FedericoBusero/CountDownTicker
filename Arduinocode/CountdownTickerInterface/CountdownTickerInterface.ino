@@ -125,44 +125,44 @@ void nexttimer_seconds_min()
 }
 
 void ticker_StartCountdown(int _hour, int _minute, int _second) {
-  SERIAL_RASPI.print("StartCountdown ");
+  SERIAL_RASPI.print(F("StartCountdown "));
   SERIAL_RASPI.print(_hour);
   SERIAL_RASPI.print(' ');
   SERIAL_RASPI.print(_minute);
   SERIAL_RASPI.print(' ');
   SERIAL_RASPI.print(_second);
-  SERIAL_RASPI.print("\r\n");
+  SERIAL_RASPI.print(F("\r\n"));
 }
 
 void ticker_ResetCountdown(int _hour, int _minute, int _second) {
-  SERIAL_RASPI.print("ResetCountdown ");
+  SERIAL_RASPI.print(F("ResetCountdown "));
   SERIAL_RASPI.print(_hour);
   SERIAL_RASPI.print(' ');
   SERIAL_RASPI.print(_minute);
   SERIAL_RASPI.print(' ');
   SERIAL_RASPI.print(_second);
-  SERIAL_RASPI.print("\r\n");
+  SERIAL_RASPI.print(F("\r\n"));
 }
 
 
 void ticker_pause() {
-  SERIAL_RASPI.print("Pause");
-  SERIAL_RASPI.print("\r\n");
+  SERIAL_RASPI.print(F("Pause"));
+  SERIAL_RASPI.print(F("\r\n"));
 }
 
 void ticker_stop() {
-  SERIAL_RASPI.print("Stop");
-  SERIAL_RASPI.print("\r\n");
+  SERIAL_RASPI.print(F("Stop"));
+  SERIAL_RASPI.print(F("\r\n"));
 }
 
 void ticker_quit() {
-  SERIAL_RASPI.print("Quit");
-  SERIAL_RASPI.print("\r\n");
+  SERIAL_RASPI.print(F("Quit"));
+  SERIAL_RASPI.print(F("\r\n"));
 }
 
 void ticker_ping() {
-  SERIAL_RASPI.print("Ping");
-  SERIAL_RASPI.print("\r\n");
+  SERIAL_RASPI.print(F("Ping"));
+  SERIAL_RASPI.print(F("\r\n"));
 }
 
 void updatedisplay()
