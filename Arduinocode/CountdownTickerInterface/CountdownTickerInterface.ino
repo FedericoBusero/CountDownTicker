@@ -106,12 +106,22 @@ void nexttimer_minutes_min()
 
 void nexttimer_seconds_plus()
 {
-  nexttimer_seconds = (nexttimer_seconds + 1) % 60;
+  ++nexttimer_seconds;
+  if (nexttimer_seconds == 60)
+  {
+    nexttimer_seconds = 0;
+    nexttimer_minutes_plus();
+  }
 }
 
 void nexttimer_seconds_min()
 {
-  nexttimer_seconds = (nexttimer_seconds +60 - 1) % 60;
+  --nexttimer_seconds;
+  if (nexttimer_seconds == -1)
+  {
+    nexttimer_seconds = 59;
+    nexttimer_minutes_min();
+  }
 }
 
 void ticker_StartCountdown(int _hour, int _minute, int _second) {
