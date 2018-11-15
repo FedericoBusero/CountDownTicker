@@ -256,7 +256,7 @@ void setup() {
   inputString.reserve(200);
 #ifdef ESP8266
   WiFi.mode(WIFI_OFF);
- #endif
+#endif
   nexttimer_init();
 
   lcd.init();                      // initialize the lcd
