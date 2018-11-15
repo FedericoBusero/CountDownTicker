@@ -150,6 +150,11 @@ void ticker_quit() {
   SERIAL_RASPI.print("\r\n");
 }
 
+void ticker_ping() {
+  SERIAL_RASPI.print("Ping");
+  SERIAL_RASPI.print("\r\n");
+}
+
 void updatedisplay()
 {
   String str = "Next: ";
@@ -261,6 +266,7 @@ void setup() {
   lcd.print("Next:   00:00   ");
   lcd.setCursor(0, 1);
   lcd.print("Booting ...     ");
+  ticker_ping();
 }
 
 void loop() {
