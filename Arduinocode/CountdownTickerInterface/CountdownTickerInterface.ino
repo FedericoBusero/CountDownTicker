@@ -67,6 +67,7 @@ String inputString = "";         // a String to hold incoming data
 int nexttimer_hour = 0;
 int nexttimer_minutes = 0;
 int nexttimer_seconds = 0;
+
 int currentmode = MODE_BOOTING;
 
 void nexttimer_init()
