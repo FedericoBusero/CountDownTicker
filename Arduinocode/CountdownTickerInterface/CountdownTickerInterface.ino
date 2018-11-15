@@ -283,9 +283,6 @@ void loop() {
     char inChar = (char)SERIAL_RASPI.read();
     inputString += inChar;
     if (inChar == '\n') {
-      //      lcd.setCursor(0, 1);
-      //      lcd.print("                ");
-      //      SERIAL_RASPI.println(inputString);
       inputString.trim();
       int pos = inputString.indexOf(',');
       if (pos >= 0)
