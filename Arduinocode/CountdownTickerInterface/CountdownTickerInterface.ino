@@ -272,8 +272,7 @@ void setup() {
   lcd.init();                      // initialize the lcd
   // Print a message to the LCD.
   lcd.backlight();
-  lcd.setCursor(0, 0);
-  lcd.print("Next:   00:00   ");
+  updatedisplay();
   lcd.setCursor(0, 1);
   lcd.print("Booting ...     ");
   ticker_ping();
