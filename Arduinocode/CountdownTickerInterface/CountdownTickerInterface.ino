@@ -2,6 +2,7 @@
 #include <LiquidCrystal_I2C.h>
 
 #ifdef ESP8266
+#include <ESP8266WiFi.h>
 // 3.3V display
 // SDA=D2=GPIO4, SCL=D1=GPIO5 op NodeMCU
 //LiquidCrystal_I2C lcd(0x3F,16,2);  // set the LCD address to 0x3F for a 16 chars and 2 line display
@@ -177,12 +178,18 @@ void onButtonPressed(int id)
   switch (id)
   {
     case BUTTON_RESET:
-      ticker_ResetCountdown(nexttimer_hour, nexttimer_minutes, nexttimer_seconds);
+      if (currentmode != MODE_BOOTING)
+      {
+        ticker_ResetCountdown(nexttimer_hour, nexttimer_minutes, nexttimer_seconds);
+      }
       break;
 
     case BUTTON_PAUSEPLAY:
       switch (currentmode)
       {
+        case MODE_BOOTING:
+          break;
+
         case MODE_PAUSED:
         case MODE_RUNNING:
           ticker_pause();
@@ -199,11 +206,17 @@ void onButtonPressed(int id)
       break;
 
     case BUTTON_STOP:
-      ticker_stop();
+      if (currentmode != MODE_BOOTING)
+      {
+        ticker_stop();
+      }
       break;
 
     case BUTTON_STOP_LONG:
-      ticker_quit();
+      if (currentmode != MODE_BOOTING)
+      {
+        ticker_quit();
+      }
       break;
 
     case BUTTON_MINUTES_PLUS:
@@ -236,7 +249,9 @@ void onButtonReleased(int id)
 void setup() {
   SERIAL_RASPI.begin(115200);
   inputString.reserve(200);
-
+#ifdef ESP8266
+  WiFi.mode(WIFI_OFF);
+ #endif
   nexttimer_init();
 
   lcd.init();                      // initialize the lcd
