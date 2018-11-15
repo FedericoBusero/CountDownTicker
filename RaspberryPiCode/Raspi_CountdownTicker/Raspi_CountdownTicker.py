@@ -103,6 +103,17 @@ def ticker_updateStatus(tijdstr,newmode):
         ser.write(str(clock_mode).encode())
         ser.write(b'\n')
 
+def ticker_ping():
+    global clockStatus
+    global clock_mode
+    # print("Ping ")
+    # print(clock_mode)
+    # print(clockStatus)
+    ser.write(clockStatus.encode())
+    ser.write(b',')
+    ser.write(str(clock_mode).encode())
+    ser.write(b'\n')
+
 def resetticker(*args):
     ticker_StartCountdown(0,0,7)
 
@@ -124,6 +135,9 @@ def processSerial():
         elif words[0] == "Quit":
             # print("Quit")
             ticker_shutdown()
+        elif words[0] == "Ping":
+            # print("Ping")
+            ticker_ping()
         elif words[0] == "StartCountdown":
             # print("StartCountdown")
             if (len(words)>3):
@@ -184,6 +198,7 @@ def show_time():
 
 if (platform.system()=="Windows"):
     ser = serial.Serial("COM4",115200)
+    pygame.time.delay(1000)
 else:
     ser = serial.Serial("/dev/ttyUSB0",115200)
 
