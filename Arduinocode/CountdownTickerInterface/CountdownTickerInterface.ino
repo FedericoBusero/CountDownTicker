@@ -19,8 +19,7 @@ LiquidCrystal_I2C lcd(LCD_I2C_ADDRESS, 16, 2); // set the LCD address to 0x3F fo
 #include "Button.h"
 /*
   TODO:
-  - check if string class causes memory leaks
-  - hidden switchoff (very long press stop = shutdown)?
+  - don't use String class
 */
 
 #define SERIAL_RASPI Serial
