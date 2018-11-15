@@ -53,10 +53,10 @@ Button       buttonPausePlay  (D0, BUTTON_PAUSEPLAY);
 Button       buttonStop       (10, BUTTON_STOP); // GPIO10
 //ButtonLong   buttonStop       (10, BUTTON_STOP, BUTTON_STOP_LONG); // GPIO10
 #else
-ButtonRepeat buttonMinutesPlus(2, BUTTON_MINUTES_PLUS);
-ButtonRepeat buttonMinutesMin (3, BUTTON_MINUTES_MIN);
-ButtonRepeat buttonSecondsPlus(4, BUTTON_SECONDS_PLUS);
-ButtonRepeat buttonSecondsMin (5, BUTTON_SECONDS_MIN);
+ButtonRepeat buttonMinutesPlus(3, BUTTON_MINUTES_PLUS);
+ButtonRepeat buttonMinutesMin (2, BUTTON_MINUTES_MIN);
+ButtonRepeat buttonSecondsPlus(5, BUTTON_SECONDS_PLUS);
+ButtonRepeat buttonSecondsMin (4, BUTTON_SECONDS_MIN);
 Button       buttonReset      (6, BUTTON_RESET);
 Button       buttonPausePlay  (7, BUTTON_PAUSEPLAY);
 ButtonLong   buttonStop       (8, BUTTON_STOP, BUTTON_STOP_LONG); 
