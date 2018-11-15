@@ -119,8 +119,15 @@ void nexttimer_seconds_min()
   --nexttimer_seconds;
   if (nexttimer_seconds == -1)
   {
-    nexttimer_seconds = 59;
-    nexttimer_minutes_min();
+    if ((nexttimer_minutes == 0) && (nexttimer_hour == 0))
+    {
+      nexttimer_seconds = 0;
+    }
+    else
+    {
+      nexttimer_seconds = 59;
+      nexttimer_minutes_min();
+    }
   }
 }
 
