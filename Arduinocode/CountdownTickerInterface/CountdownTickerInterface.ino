@@ -177,31 +177,18 @@ void ticker_ping() {
 void updatedisplay_nexttimer()
 {
   char display[17]; // LCD_NUMCHARS+1
-  char *pos;
-  
-  strcpy(display,"Next: ");
-  pos=&(display[6]);
-  
+
+  strcpy(display, "Next:     :     ");
   if (nexttimer_hour)
   {
-    *pos++ = (char)('0' + (nexttimer_hour % 10));
-    *pos++ = ':';
+    display[6] = (char)('0' + (nexttimer_hour % 10));
+    display[7] = ':';
   }
-  else
-  {
-    *pos++ = ' ';
-    *pos++ = ' ';
-  }
-  *pos++ = (char)('0' + (nexttimer_minutes / 10));
-  *pos++ = (char)('0' + (nexttimer_minutes % 10));
-  *pos++ = ':';
-  *pos++ = (char)('0' + (nexttimer_seconds / 10));
-  *pos++ = (char)('0' + (nexttimer_seconds % 10));
-  *pos++ = ' ';
-  *pos++ = ' ';
-  *pos++ = ' ';
-  *pos++ = 0;
-  
+  display[8] = (char)('0' + (nexttimer_minutes / 10));
+  display[9] = (char)('0' + (nexttimer_minutes % 10));
+  display[11] = (char)('0' + (nexttimer_seconds / 10));
+  display[12] = (char)('0' + (nexttimer_seconds % 10));
+
   lcd.setCursor(0, 0);
   lcd.print(display);
 }
