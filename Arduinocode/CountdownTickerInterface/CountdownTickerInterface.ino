@@ -12,12 +12,13 @@
 
 #endif
 
-LiquidCrystal_I2C lcd(LCD_I2C_ADDRESS, 16, 2); // set the LCD address to 0x3F for a 16 chars and 2 line display
+#define LCD_NUMCHARS 16
+LiquidCrystal_I2C lcd(LCD_I2C_ADDRESS, LCD_NUMCHARS, 2); // set the LCD address to 0x3F for a 16 chars and 2 line display
 
 #include "Button.h"
 /*
   TODO:
-  - don't use String class
+  - remove use of string class String inputString
 */
 
 #define SERIAL_RASPI Serial
@@ -173,9 +174,9 @@ void ticker_ping() {
   SERIAL_RASPI.print(F("\r\n"));
 }
 
-void updatedisplay()
+void updatedisplay_nexttimer()
 {
-  char display[17];
+  char display[17]; // LCD_NUMCHARS+1
   char *pos;
   
   strcpy(display,"Next: ");
@@ -203,6 +204,46 @@ void updatedisplay()
   
   lcd.setCursor(0, 0);
   lcd.print(display);
+}
+
+void lcd_print_filled(int c, int r, const char *str)
+{
+  int i;
+  char screenbuf[LCD_NUMCHARS + 1];
+
+  for (i = 0; i < LCD_NUMCHARS && str[i] != '\0'; i++)
+  {
+    screenbuf[i] = str[i];
+  }
+  for ( ; i < LCD_NUMCHARS; i++)
+  {
+    screenbuf[i] = ' ';
+  }
+  screenbuf[LCD_NUMCHARS] = '\0';
+
+  lcd.setCursor(c, r);
+  lcd.print(screenbuf);
+}
+
+void ticker_updateStatus(const char *statusstring, int newmode) {
+  currentmode = newmode;
+  switch (currentmode)
+  {
+    case MODE_BOOTING:
+      break;
+
+    case MODE_RUNNING:
+    case MODE_PAUSED:
+    case MODE_STOPPED:
+      updatedisplay_nexttimer();
+      lcd_print_filled(0, 1, statusstring);
+      break;
+
+    case MODE_QUIT:
+      lcd_print_filled(0, 0, "Shutdown");
+      lcd_print_filled(0, 1, "");
+      break;
+  }
 }
 
 void onButtonPressed(int id)
@@ -253,22 +294,22 @@ void onButtonPressed(int id)
 
     case BUTTON_MINUTES_PLUS:
       nexttimer_minutes_plus();
-      updatedisplay();
+      updatedisplay_nexttimer();
       break;
 
     case BUTTON_MINUTES_MIN:
       nexttimer_minutes_min();
-      updatedisplay();
+      updatedisplay_nexttimer();
       break;
 
     case BUTTON_SECONDS_PLUS:
       nexttimer_seconds_plus();
-      updatedisplay();
+      updatedisplay_nexttimer();
       break;
 
     case BUTTON_SECONDS_MIN:
       nexttimer_seconds_min();
-      updatedisplay();
+      updatedisplay_nexttimer();
       break;
   }
 }
@@ -289,17 +330,18 @@ void setup() {
   lcd.init();                      // initialize the lcd
   // Print a message to the LCD.
   lcd.backlight();
-  updatedisplay();
+  updatedisplay_nexttimer();
   lcd.setCursor(0, 1);
-  lcd.print("Booting ...     ");
+  lcd_print_filled(0, 1, "Booting ...");
   ticker_ping();
 }
 
-void loop() {
+void processSerial()
+{
   while (SERIAL_RASPI.available()) {
     char inChar = (char)SERIAL_RASPI.read();
     inputString += inChar;
-    if (inChar == '\n') {
+    if (inChar == '\n') { // TODO check if too long
       inputString.trim();
       int pos = inputString.indexOf(',');
       if (pos >= 0)
@@ -309,7 +351,7 @@ void loop() {
           char mode_char = inputString.charAt(pos + 1);
           if ((mode_char >= '0') && (mode_char <= '5'))
           {
-            currentmode = mode_char - '0';
+            int newmode = mode_char - '0';
             if (pos == 0)
             {
               inputString = "";
@@ -318,39 +360,21 @@ void loop() {
             {
               inputString = inputString.substring(0, pos);
             }
-
-            switch (currentmode)
-            {
-              case MODE_BOOTING:
-                break;
-
-              case MODE_RUNNING:
-                break;
-
-              case MODE_PAUSED:
-                break;
-
-              case MODE_STOPPED:
-                updatedisplay();
-                break;
-
-              case MODE_QUIT:
-                lcd.setCursor(0, 0);
-                lcd.print("Shutdown        ");
-                lcd.setCursor(0, 1);
-                lcd.print("                ");
-                break;
-            }
+            ticker_updateStatus(inputString.c_str(), newmode);
           }
         }
       }
-      lcd.setCursor(0, 1);
-      lcd.print(inputString + "                ");
       // clear the string:
       inputString = "";
     }
   }
+}
 
+void loop() {
+  // Process incoming bytes on RASPI_SERIAL
+  processSerial();
+
+  // Check button states
   buttonPausePlay.checkStatus();
   buttonMinutesPlus.checkStatus();
   buttonMinutesMin.checkStatus();
