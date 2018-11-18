@@ -13,6 +13,8 @@
 #endif
 
 #define LCD_NUMCHARS 16
+#define MAX_BUFFERSIZE 21 // minimum LCD_NUMCHARS+5
+
 LiquidCrystal_I2C lcd(LCD_I2C_ADDRESS, LCD_NUMCHARS, 2); // set the LCD address to 0x3F for a 16 chars and 2 line display
 
 #include "Button.h"
