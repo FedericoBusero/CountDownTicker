@@ -16,10 +16,6 @@
 LiquidCrystal_I2C lcd(LCD_I2C_ADDRESS, LCD_NUMCHARS, 2); // set the LCD address to 0x3F for a 16 chars and 2 line display
 
 #include "Button.h"
-/*
-  TODO:
-  - remove use of string class String inputString
-*/
 
 #define SERIAL_RASPI Serial
 
@@ -62,8 +58,6 @@ Button       buttonReset      (6, BUTTON_RESET);
 Button       buttonPausePlay  (7, BUTTON_PAUSEPLAY);
 ButtonLong   buttonStop       (8, BUTTON_STOP, BUTTON_STOP_LONG); 
 #endif
-
-String inputString = "";         // a String to hold incoming data
 
 int nexttimer_hour = 0;
 int nexttimer_minutes = 0;
@@ -308,7 +302,6 @@ void onButtonReleased(int id)
 
 void setup() {
   SERIAL_RASPI.begin(115200);
-  inputString.reserve(200);
 #ifdef ESP8266
   WiFi.mode(WIFI_OFF);
 #endif
@@ -325,34 +318,37 @@ void setup() {
 
 void processSerial()
 {
+  static int buffersize = 0;
+  static char serialbuffer[MAX_BUFFERSIZE + 1];
+
   while (SERIAL_RASPI.available()) {
     char inChar = (char)SERIAL_RASPI.read();
-    inputString += inChar;
-    if (inChar == '\n') { // TODO check if too long
-      inputString.trim();
-      int pos = inputString.indexOf(',');
-      if (pos >= 0)
-      {
-        if (inputString.length() >= pos + 2)
+    serialbuffer[buffersize++] = inChar;
+    serialbuffer[buffersize] = '\0';
+    if (buffersize >= MAX_BUFFERSIZE)
+    {
+      // flush all bytes
+      while (SERIAL_RASPI.available()) {
+        SERIAL_RASPI.read();
+      }
+      buffersize = 0;
+    }
+    else
+    {
+      if (inChar == '\n')  {
+        char *pos = strrchr(serialbuffer, ',');
+        if (*pos == ',')
         {
-          char mode_char = inputString.charAt(pos + 1);
-          if ((mode_char >= '0') && (mode_char <= '5'))
+          *pos = '\0';
+          ++pos;
+          int newmode = atoi(pos);
+          if ((newmode >= 1) && (newmode <= 4))
           {
-            int newmode = mode_char - '0';
-            if (pos == 0)
-            {
-              inputString = "";
-            }
-            else
-            {
-              inputString = inputString.substring(0, pos);
-            }
-            ticker_updateStatus(inputString.c_str(), newmode);
+            ticker_updateStatus(serialbuffer, newmode);
           }
         }
+        buffersize = 0;
       }
-      // clear the string:
-      inputString = "";
     }
   }
 }
