@@ -43,13 +43,13 @@ enum
 };
 
 #ifdef ESP8266
-ButtonRepeat buttonMinutesPlus(D3, BUTTON_MINUTES_PLUS);
-ButtonRepeat buttonMinutesMin (D4, BUTTON_MINUTES_MIN);
-ButtonRepeat buttonSecondsPlus(D6, BUTTON_SECONDS_PLUS);
-ButtonRepeat buttonSecondsMin (D7, BUTTON_SECONDS_MIN);
-Button       buttonReset      (D5, BUTTON_RESET);
-Button       buttonPausePlay  (D0, BUTTON_PAUSEPLAY);
-Button       buttonStop       (10, BUTTON_STOP); // GPIO10
+ButtonRepeat buttonMinutesPlus(D3, BUTTON_MINUTES_PLUS); // GPIO0
+ButtonRepeat buttonMinutesMin (D4, BUTTON_MINUTES_MIN);  // GPIO2
+ButtonRepeat buttonSecondsPlus(D6, BUTTON_SECONDS_PLUS); // GPIO12
+ButtonRepeat buttonSecondsMin (D7, BUTTON_SECONDS_MIN);  // GPIO13
+Button       buttonReset      (D5, BUTTON_RESET);        // GPIO14
+Button       buttonPausePlay  (D0, BUTTON_PAUSEPLAY);    // GPIO16
+Button       buttonStop       (10, BUTTON_STOP);         // GPIO10
 //ButtonLong   buttonStop       (10, BUTTON_STOP, BUTTON_STOP_LONG); // GPIO10
 #else
 ButtonRepeat buttonMinutesPlus(3, BUTTON_MINUTES_PLUS);
