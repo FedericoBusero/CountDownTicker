@@ -122,7 +122,13 @@ def resettickerpause(*args):
 
 def processSerial():
     # debug_print("processSerial")
-    line = ser.readline().decode('ascii')
+    try:
+        line = ser.readline().decode('ascii')
+    except UnicodeDecodeError:
+        #debug_print("UnicodeDecodeError")
+        line = ""
+    else:
+        pass
     # debug_print(line)
     words = line.split()
     if (len(words)>0):
