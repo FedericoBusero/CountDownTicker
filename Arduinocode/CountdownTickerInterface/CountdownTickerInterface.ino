@@ -166,6 +166,7 @@ void ticker_quit() {
 }
 
 void ticker_ping() {
+  SERIAL_RASPI.print(F("\r\n"));
   SERIAL_RASPI.print(F("Ping"));
   SERIAL_RASPI.print(F("\r\n"));
 }
