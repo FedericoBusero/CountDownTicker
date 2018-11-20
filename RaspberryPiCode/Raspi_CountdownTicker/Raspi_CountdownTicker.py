@@ -286,5 +286,5 @@ while go:
             elif event.key == pygame.K_t:
                 ticker_test()
 
-    pygame.time.delay(100)
+    pygame.time.delay(50)
     show_time()
