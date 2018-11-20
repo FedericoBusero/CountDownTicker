@@ -11,7 +11,8 @@ global endTime
 global clock_mode
 global deltaTime
 global clockStatus
-
+global currentdisplaycolour
+global currentdisplaytime
 
 def debug_print(textstr):
     # print(textstr)
@@ -156,8 +157,9 @@ def processSerial():
 def show_time():
     global deltaTime
     global endTime
-
-    screen.fill(BLACK)
+    global currentdisplaycolour
+    global currentdisplaytime
+    
     # debug_print("showtime");
     if (clock_mode == 1):
         # Get the time remaining until the event
@@ -184,24 +186,34 @@ def show_time():
 
     if (clock_mode == 3):
         colour = BLACK
+        if (currentdisplaycolour!=colour):
+            screen.fill(BLACK)
+            pygame.display.update()
+            currentdisplaycolour=colour
+            currentdisplaytime=""
     else:
         # Show the time left
         timestr = pretty_time_delta(deltaTime.total_seconds())
         ticker_updateStatus(timestr,clock_mode)
-        debug_print("font render")
-        text = font.render(timestr, True, (colour))
-        x = (screen_width/2 - (text.get_width()) // 2)
-        y = (screen_height/2 - (text.get_height()) // 2)
-        debug_print("screen blit")
-        screen.blit (text, (x,y))
-
-    pygame.display.update()
-    
+        if ((currentdisplaycolour!=colour) | (currentdisplaytime!=timestr)):
+            screen.fill(BLACK)
+            debug_print("font render")
+            text = font.render(timestr, True, (colour))
+            x = (screen_width/2 - (text.get_width()) // 2)
+            y = (screen_height/2 - (text.get_height()) // 2)
+            debug_print("screen blit")
+            screen.blit (text, (x,y))
+            pygame.display.update()
+            currentdisplaycolour=colour
+            currentdisplaytime=timestr
+        
     #process content on serial port
     moreBytes = ser.inWaiting()
     if moreBytes:
         processSerial()
 
+        
+# Main program
 if (platform.system()=="Windows"):
     ser = serial.Serial("COM4",115200)
     pygame.time.delay(1000)
@@ -238,6 +250,10 @@ go = True
 GREEN = (0,255,0)
 RED = (255,0,0)
 BLACK = (0,0,0)
+
+currentdisplaycolour=BLACK
+currentdisplaytime=""
+
 if (platform.system()=="Windows"):
     font_size = int(screen_width/4.25)
 else:
