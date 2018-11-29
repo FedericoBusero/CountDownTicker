@@ -42,6 +42,8 @@ enum
   MODE_QUIT,
 };
 
+#define DELAY_LOOP 2
+
 #ifdef ESP8266
 ButtonRepeat buttonMinutesPlus(D3, BUTTON_MINUTES_PLUS); // GPIO0
 ButtonRepeat buttonMinutesMin (D4, BUTTON_MINUTES_MIN);  // GPIO2
@@ -368,4 +370,8 @@ void loop() {
   buttonSecondsPlus.checkStatus();
   buttonSecondsMin.checkStatus();
   buttonStop.checkStatus();
+  
+#ifdef DELAY_LOOP
+  delay(DELAY_LOOP);
+#endif
 }
